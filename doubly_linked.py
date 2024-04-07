@@ -13,6 +13,7 @@ class Doubly_Linked():
     def __init__(self):
         self.head = None
         self.counter = 0
+        self.last = self.head
 
     def add_element(self, elem):
         obj = self.head
@@ -27,6 +28,7 @@ class Doubly_Linked():
 
         else:
             self.head = Doubly_Object(elem, None, None)
+            self.last = self.head
 
     def print_list(self):
         if self.head:
@@ -42,40 +44,45 @@ class Doubly_Linked():
             print("Список пуст")
 
     def search_element(self, elem, word):
+        c = 0
         alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-        if self.head:
-            obj = self.head
-            if (alf.find(elem) > self.counter and alf.find(elem) - self.counter < self.counter + len(alf) - alf.find(
-                    elem)) or (alf.find(elem) < self.counter and self.counter - alf.find(elem) > self.counter + len(
-                alf) - alf.find(elem)):
+        direct_distance = abs(alf.find(elem) - self.counter)
+        reverse_distance = len(alf) - direct_distance
+        if self.last:
+            obj = self.last
+            if (self.counter > alf.find(elem) and direct_distance < reverse_distance) or (
+                    self.counter < alf.find(elem) and direct_distance > reverse_distance):
                 while True:
                     if elem == obj.value:
                         obj.linkSL.singly_add_element(word)
+                        self.last = obj
                         break
                     else:
-                        if obj.link2 == self.head or obj.link2 == None:
-                            print("Такого элемента в списке нет")
+                        if c >= len(alf):
+                            print("Возможно в тексте есть иностранный алфавит")
                             break
                         else:
                             obj = obj.link2
                             self.counter += 1
-            elif (alf.find(elem) < self.counter and self.counter - alf.find(elem) < alf.find(elem) + len(
-                    alf) - self.counter) or (
-                    alf.find(elem) > self.counter and self.counter - alf.find(elem) > alf.find(elem) + len(
-                    alf) - self.counter):
+                            c += 1
+            elif (self.counter > alf.find(elem) and direct_distance > reverse_distance) or (
+                    self.counter < alf.find(elem) and direct_distance < reverse_distance):
                 while True:
                     if elem == obj.value:
                         obj.linkSL.singly_add_element(word)
+                        self.last = obj
                         break
                     else:
-                        if obj.link1 == self.head or obj.link1 == None:
-                            print("Такого элемента в списке нет")
+                        if c >= len(alf):
+                            print("Возможно в тексте есть иностранный алфавит")
                             break
                         else:
                             obj = obj.link1
                             self.counter -= 1
-            else:
-                print("Я запутался")
+                            c += 1
+            elif alf.find(elem) == self.counter:
+                obj.linkSL.singly_add_element(word)
+                self.last = obj
         else:
             print("Список пуст")
         if self.counter < 0:
@@ -83,9 +90,12 @@ class Doubly_Linked():
         elif self.counter > len(alf):
             self.counter = self.counter % len(alf)
 
+
 def main():
     DL = Doubly_Linked()
     DL.add_element("а")
     DL.print_list()
+
+
 if __name__ == "__main__":
     main()
