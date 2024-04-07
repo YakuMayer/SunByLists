@@ -1,4 +1,5 @@
 from doubly_linked import *
+
 DL = Doubly_Linked()
 with open("text.txt", "r", encoding="utf-8") as f:
     text = "".join(e.lower() for e in f.readline() if e.isalnum() or e == " ").split()
