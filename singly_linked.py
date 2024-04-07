@@ -3,6 +3,7 @@ class Singly_Object():
         self.value = value
         self.link = link
 
+
 class Singly_Linked():
     def __init__(self):
         self.head = None
