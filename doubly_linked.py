@@ -43,8 +43,26 @@ class Doubly_Linked():
         else:
             print("Список пуст")
 
+    def move_tracker(self, elem, word, obj, direct = True):
+        alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+        while True:
+            if elem == obj.value:
+                obj.linkSL.singly_add_element(word)
+                self.last = obj
+                break
+            else:
+                if elem not in list(alf):
+                    print("Возможно в тексте есть иностранный алфавит")
+                    break
+                else:
+                    if direct:
+                        obj = obj.link2
+                        self.counter += 1
+                    else:
+                        obj = obj.link1
+                        self.counter -= 1
+
     def search_element(self, elem, word):
-        c = 0
         alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
         direct_distance = abs(alf.find(elem) - self.counter)
         reverse_distance = len(alf) - direct_distance
@@ -52,34 +70,10 @@ class Doubly_Linked():
             obj = self.last
             if (self.counter > alf.find(elem) and direct_distance < reverse_distance) or (
                     self.counter < alf.find(elem) and direct_distance > reverse_distance):
-                while True:
-                    if elem == obj.value:
-                        obj.linkSL.singly_add_element(word)
-                        self.last = obj
-                        break
-                    else:
-                        if c >= len(alf):
-                            print("Возможно в тексте есть иностранный алфавит")
-                            break
-                        else:
-                            obj = obj.link2
-                            self.counter += 1
-                            c += 1
+                self.move_tracker(elem, word, obj, direct=True)
             elif (self.counter > alf.find(elem) and direct_distance > reverse_distance) or (
                     self.counter < alf.find(elem) and direct_distance < reverse_distance):
-                while True:
-                    if elem == obj.value:
-                        obj.linkSL.singly_add_element(word)
-                        self.last = obj
-                        break
-                    else:
-                        if c >= len(alf):
-                            print("Возможно в тексте есть иностранный алфавит")
-                            break
-                        else:
-                            obj = obj.link1
-                            self.counter -= 1
-                            c += 1
+                self.move_tracker(elem, word, obj, direct=False)
             elif alf.find(elem) == self.counter:
                 obj.linkSL.singly_add_element(word)
                 self.last = obj
